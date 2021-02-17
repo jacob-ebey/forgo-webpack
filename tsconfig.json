@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "target": "ES2015",
+    "module": "esnext",
+    "moduleResolution": "Node",
+    "declaration": false,
+    "lib": ["es2020", "DOM"],
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "forgo",
+    "baseUrl": "./",
+    "paths": {
+      "@forgo/head": ["src/head.tsx"],
+      "@forgo/lazy": ["./src/lazy.tsx"]
+    }
+  },
+  "include": ["./src/**/*"]
+}
