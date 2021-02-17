@@ -7,9 +7,9 @@ const stats = __non_webpack_require__("../client/static/stats.json");
 
 async function handler(req: NowRequest, res: NowResponse) {
   try {
-    const { html } = await prerender(req.url || "/", stats);
+    const { html, status } = await prerender(req.url || "/", stats);
 
-    res.status(200);
+    res.status(status);
     res.write(html);
     res.end();
   } catch (error) {

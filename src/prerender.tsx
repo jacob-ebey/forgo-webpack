@@ -60,14 +60,23 @@ async function prerender(url: string, stats: any) {
 
   const forgoInstance = createForgoInstance({ window, document });
 
+  let status = 200;
   async function tryRender() {
     let retry = 0;
     let lastError;
     while (retry < 10) {
       retry++;
+      status = 200;
 
       try {
-        return forgoInstance.render(<App matcher={matcher} />);
+        return forgoInstance.render(
+          <App
+            matcher={matcher}
+            onNotFound={() => {
+              status = 404;
+            }}
+          />
+        );
       } catch (error) {
         if (error?.then) {
           await error;
@@ -123,7 +132,7 @@ async function prerender(url: string, stats: any) {
 </body>
 </html>`;
 
-  return { html };
+  return { html, status };
 }
 
 export default prerender;

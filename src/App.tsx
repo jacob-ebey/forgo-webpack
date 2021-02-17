@@ -10,14 +10,19 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 type AppProps = {
   matcher: Matcher;
+  onNotFound?: () => void;
 };
 
 function App(_: AppProps) {
   return {
-    render({ matcher }: AppProps, args: ForgoRenderArgs) {
+    render({ matcher, onNotFound }: AppProps, args: ForgoRenderArgs) {
       const route =
         matcher.matchExactUrl("/", () => <Home />) ||
         matcher.matchUrl("/about", () => <About />);
+
+      if (!route && onNotFound) {
+        onNotFound();
+      }
 
       return <Router>{route || <NotFound />}</Router>;
     },
