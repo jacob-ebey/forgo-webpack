@@ -37,9 +37,9 @@ const listener: RequestListener = async (req, res) => {
   try {
     const stats = JSON.parse(fs.readFileSync(statsPath, "utf-8"));
 
-    const { html } = await prerender(req.url || "/", stats);
+    const { html, status } = await prerender(req.url || "/", stats);
 
-    res.statusCode = 200;
+    res.statusCode = status;
     res.write(html);
     return res.end();
   } catch (error) {
