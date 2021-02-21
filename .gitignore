@@ -1,6 +1,7 @@
+.vercel
+.webpack
 dist/
 node_modules/
 .npmrc
 yarn-error.log
 
-.vercel

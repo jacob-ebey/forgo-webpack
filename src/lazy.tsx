@@ -1,9 +1,5 @@
-import { rerender } from "forgo";
-import type {
-  ForgoComponent,
-  ForgoComponentCtor,
-  ForgoRenderArgs,
-} from "forgo";
+import { ForgoErrorArgs, rerender } from "forgo";
+import type { ForgoComponent, ForgoComponentCtor, ForgoCtorArgs } from "forgo";
 
 type DefaultForgoComponent<TProps> = { default: ForgoComponentCtor<TProps> };
 
@@ -11,35 +7,18 @@ type LazyResult<TProps> =
   | ForgoComponentCtor<TProps>
   | DefaultForgoComponent<TProps>;
 
-function Empty() {
-  return {
-    render() {
-      return <span style={{ display: "none" }} />;
-    },
-  };
-}
-
-type LazyComponentProps<TProps> = {
-  Component: ForgoComponentCtor<TProps>;
-  props: TProps;
-  chunkName?: string;
+type EmptyOrLastStateProps = {
+  lastState: any;
 };
-function LazyComponent<TProps>(_: LazyComponentProps<TProps>) {
+
+function EmptyOrLastState(_: EmptyOrLastStateProps) {
   return {
-    render({ Component, props, chunkName }: LazyComponentProps<TProps>) {
-      return (
-        <>
-          {typeof window === "undefined" ? (
-            <span
-              lazy-preload-chunkname={chunkName}
-              style={{ display: "none" }}
-            />
-          ) : (
-            ""
-          )}
-          <Component {...props} />
-        </>
-      );
+    render({ lastState }: EmptyOrLastStateProps) {
+      if (lastState) {
+        return <div dangerouslySetInnerHTML={{ __html: lastState }} />;
+      }
+
+      return "";
     },
   };
 }
@@ -55,7 +34,10 @@ function lazy<TProps>(
   let Component: ForgoComponentCtor<TProps>;
   let promise: Promise<void> | undefined;
 
-  function Lazy(_: TProps): ForgoComponent<TProps> {
+  function Lazy(
+    _: TProps,
+    { environment }: ForgoCtorArgs
+  ): ForgoComponent<TProps> {
     if (!promise) {
       promise = loader().then((result: any) => {
         Component = result.default || result;
@@ -63,39 +45,45 @@ function lazy<TProps>(
       });
     }
 
-    let rerenderRef: {};
-
     return {
-      render(props: TProps, args: ForgoRenderArgs) {
-        const renderRef = (rerenderRef = {});
-
+      render(props: TProps) {
         if (promise && !Component) {
-          if (typeof window === "undefined") {
-            throw promise;
-          }
-
-          promise.then(() => {
-            if (renderRef === rerenderRef) {
-              rerender(args.element);
-            }
-          });
+          throw promise;
         }
 
-        if (!Component) {
-          return <Empty />;
+        const doc: {
+          __FORGO_LAZY__: Set<string>;
+        } = environment.document as any;
+        doc.__FORGO_LAZY__ = doc.__FORGO_LAZY__ || new Set();
+
+        if (options?.chunkName) {
+          doc.__FORGO_LAZY__.add(options.chunkName);
         }
-        return (
-          <LazyComponent
-            Component={Component}
-            props={props}
-            chunkName={options?.chunkName}
-          />
-        );
+
+        return <Component {...props} />;
       },
     };
   }
 
   return Lazy;
+}
+
+export function error(getAppState: () => any) {
+  return (props: any, args: ForgoErrorArgs) => {
+    if (typeof window !== "undefined" && args.error?.then) {
+      (args.error as Promise<void>).then(() => {
+        const elem = {
+          ...args.element,
+          componentIndex: args.element.componentIndex - 1,
+        };
+        rerender(elem);
+      });
+
+      return <EmptyOrLastState lastState={getAppState()} />;
+    }
+
+    throw args.error;
+  };
 }
 
 export default lazy;

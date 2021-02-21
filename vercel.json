@@ -3,11 +3,11 @@
   "builds": [
     {
       "src": "/dist/server/vercel.js",
-      "use": "@now/node"
+      "use": "@vercel/node"
     },
     {
       "src": "/dist/client/static/**",
-      "use": "@now/static"
+      "use": "@vercel/static"
     }
   ],
   "routes": [

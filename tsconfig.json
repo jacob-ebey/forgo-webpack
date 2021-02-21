@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "allowJs": true,
     "target": "ES2015",
     "module": "esnext",
     "moduleResolution": "Node",
@@ -14,7 +14,8 @@
     "baseUrl": "./",
     "paths": {
       "@forgo/head": ["src/head.tsx"],
-      "@forgo/lazy": ["./src/lazy.tsx"]
+      "@forgo/lazy": ["./src/lazy.tsx"],
+      "@forgo/router": ["./src/router.tsx"]
     }
   },
   "include": ["./src/**/*"]
