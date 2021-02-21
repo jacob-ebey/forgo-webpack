@@ -1,0 +1,108 @@
+.resume {
+  @apply max-w-3xl;
+  @apply mx-auto;
+  @apply px-4 py-16;
+  @apply print:max-w-none;
+  @apply print:py-0;
+  @apply print:text-sm;
+}
+
+.resume > h2 {
+  @apply text-2xl print:text-lg;
+  @apply mb-4 print:mb-2;
+}
+
+.name {
+  @apply text-center text-4xl print:text-xl;
+  @apply mb-4 print:mb-2;
+}
+
+.contact {
+  @apply text-center;
+  @apply mb-16 print:mb-4;
+}
+
+@screen sm {
+  .contact > br {
+    content: "";
+  }
+  .contact > br:after {
+    content: "—";
+  }
+}
+
+@print {
+  .contact > br {
+    content: "";
+    display: none;
+  }
+  .contact > br:after {
+    content: "—";
+  }
+}
+
+.summary {
+  @apply mb-16 print:mb-4;
+}
+
+.expertise {
+  @apply list-inside;
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 print:grid print:grid-cols-3;
+  @apply mb-16 print:mb-4;
+}
+.expertise > li {
+  @apply mb-2 print:mb-1 print:list-disc;
+}
+
+.experiences {
+  @apply mb-16 print:mb-4;
+}
+
+.experiences > li {
+  @apply mb-8 print:mb-4;
+}
+.experiences > li > h3 {
+  @apply font-medium text-lg print:text-base;
+  @apply mb-2 print:mb-1;
+}
+.experiences > li > p {
+  @apply mb-4 print:mb-2;
+}
+
+.experiences > li > h3 > span {
+  @apply text-sm print:text-xs;
+}
+
+.experiences > li > ul {
+  @apply list-inside;
+}
+.experiences > li > ul > li {
+  @apply list-disc;
+  @apply mb-2 print:mb-1;
+}
+
+.experiences p {
+  @apply mb-2 print:mb-1;
+}
+
+.references {
+  @apply mb-16 print:mb-4;
+}
+
+.references > li {
+  @apply mb-8 print:mb-4;
+}
+.references > li > figure {
+}
+.references > li > figure > blockquote {
+  @apply text-sm italic;
+  @apply grid grid-flow-col gap-4;
+}
+.references > li > figure > blockquote:before {
+  content: "\“";
+  @apply block text-6xl;
+}
+.references > li > figure > blockquote:after {
+  content: "\”";
+  @apply block text-6xl;
+}

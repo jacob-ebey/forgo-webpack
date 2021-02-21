@@ -1,0 +1,23 @@
+.hero {
+  @apply max-w-3xl;
+  @apply mx-auto;
+  @apply px-4 py-32;
+}
+
+.hero a {
+  @apply underline;
+}
+
+.intro {
+  @apply font-mono;
+  @apply text-lg text-blue-800;
+}
+
+.heading {
+  @apply text-4xl;
+  @apply mb-4;
+}
+
+.content p {
+  @apply mb-4;
+}

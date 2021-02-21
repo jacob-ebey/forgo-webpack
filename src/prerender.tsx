@@ -13,45 +13,6 @@ async function prerender(url: string, stats: any) {
     "<html><head></head><body></body></html>"
   );
 
-  const preloadChunks = new Set<string>();
-  let title = "";
-
-  const createElement = document.createElement;
-  document.createElement = function (...args: any) {
-    const element = createElement.call(this, ...args);
-
-    if (element?.setAttribute) {
-      const setAttribute = element.setAttribute;
-      element.setAttribute = function (...attrArgs: any) {
-        const key = attrArgs?.[0];
-        const value = attrArgs?.[1];
-
-        if (key === "lazy-preload-chunkname") {
-          preloadChunks.add(value);
-
-          element.parentNode?.removeChild(element);
-          return;
-        }
-
-        let handled = false;
-
-        if (key === "head-title") {
-          title = value;
-          handled = true;
-        }
-
-        if (handled) {
-          element.parentNode?.removeChild(element);
-          return;
-        }
-
-        setAttribute.call(this, ...attrArgs);
-      };
-    }
-
-    return element;
-  };
-
   window.HTMLElement = HTMLElement;
   window.Text = document.createTextNode().constructor;
   window.location = { href };
@@ -78,6 +39,8 @@ async function prerender(url: string, stats: any) {
           />
         );
       } catch (error) {
+        document.head.innerHTML = "";
+
         if (error?.then) {
           await error;
         } else {
@@ -95,6 +58,10 @@ async function prerender(url: string, stats: any) {
 
   const mainAssets: string[] = stats?.assetsByChunkName?.main || [];
 
+  let head = document.head.toString() as string;
+  head = head.substring(6, head.length - 7);
+
+  const preloadChunks: Set<string> = document.__FORGO_LAZY__ || new Set();
   const chunkAssets: string[] = Array.from(
     new Set(
       Array.from(preloadChunks).reduce((p, chunk) => {
@@ -103,32 +70,31 @@ async function prerender(url: string, stats: any) {
     )
   );
 
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title}</title>
-  ${chunkAssets
+  const preloadTags = [...chunkAssets, ...mainAssets]
     .map(
       (chunk) =>
         `<link rel="preload" as="${
           chunk.endsWith(".js") ? "script" : "style"
         }" href="${publicPath}${chunk}"></script>`
     )
-    .join("\n  ")}
-  ${chunkAssets
+    .join("");
+
+  const styleLinks = [...chunkAssets, ...mainAssets]
     .filter((chunk) => chunk.endsWith(".css"))
     .map((chunk) => `<link rel="stylesheet" href="${publicPath}${chunk}">`)
-    .join("\n  ")}
-</head>
-<body>
-  <div id="__forgo">${appHtml}</div>
-  ${mainAssets
+    .join("");
+
+  const mainScriptTags = mainAssets
     .filter((chunk) => chunk.endsWith(".js"))
     .map((chunk) => `<script src="${publicPath}${chunk}"></script>`)
-    .join("\n  ")}
+    .join("");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>${head}${preloadTags}${styleLinks}</head>
+<body>
+  <div id="__forgo">${appHtml}</div>
+  ${mainScriptTags}
 </body>
 </html>`;
 

@@ -1,4 +1,5 @@
 import { rerender, ForgoRenderArgs, ForgoNode } from "forgo";
+import type { JSX } from "forgo/jsx-runtime";
 
 /*
   To be called when the url needs to be changed.
@@ -28,7 +29,17 @@ export function updateRoute() {
     ...routerRenderArgs.element,
     componentIndex: routerRenderArgs.element.componentIndex - 1,
   };
-  rerender(elem);
+
+  // TODO: Figure out why this doesn't fallback to error boundaries in the component tree.
+  try {
+    rerender(elem);
+  } catch (error) {
+    if (error?.then) {
+      (error as Promise<void>).then(() => rerender(elem));
+    } else {
+      throw error;
+    }
+  }
 }
 
 export type RouterProps = {
@@ -41,12 +52,12 @@ export function Router(props: RouterProps) {
   return {
     render(props: RouterProps, args: ForgoRenderArgs) {
       routerRenderArgs = args;
-      return <div>{props.children}</div>;
+      return <div style={{ display: "contents" }}>{props.children}</div>;
     },
   };
 }
 
-export type LinkProps = {
+export type LinkProps = JSX.HTMLAttributes<HTMLAnchorElement> & {
   key?: any;
   href: string;
   children?: ForgoNode | ForgoNode[];
@@ -58,13 +69,7 @@ export function Link(props: LinkProps) {
   return {
     render(props: LinkProps) {
       return (
-        <a
-          key={props.key}
-          style={props.style}
-          onclick={createClickHandler(props.href)}
-          href={props.href}
-          className={props.className || ""}
-        >
+        <a {...props} onclick={createClickHandler(props.href)}>
           {props.children}
         </a>
       );
@@ -79,8 +84,10 @@ export function Link(props: LinkProps) {
 function createClickHandler(url: string) {
   return (ev: MouseEvent) => {
     window.history.pushState({}, "", url);
-    updateRoute();
     ev.preventDefault();
+    updateRoute();
+
+    window.scrollTo({ top: 0, left: 0 });
   };
 }
 

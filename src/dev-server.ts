@@ -8,6 +8,8 @@ import prerender from "./prerender";
 const staticBasePath = path.resolve(__dirname, "../client");
 const statsPath = path.resolve(staticBasePath, "static/stats.json");
 
+__non_webpack_require__("source-map-support").install();
+
 const serveStatic: RequestListener = function (req, res) {
   const resolvedBase = path.resolve(staticBasePath);
   const safeSuffix = path
@@ -30,6 +32,7 @@ const serveStatic: RequestListener = function (req, res) {
 };
 
 const listener: RequestListener = async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache");
   if (req.url?.match(/\.\w+$/)) {
     return serveStatic(req, res);
   }
@@ -40,6 +43,7 @@ const listener: RequestListener = async (req, res) => {
     const { html, status } = await prerender(req.url || "/", stats);
 
     res.statusCode = status;
+    res.setHeader("Content-Type", "text/html; charset=UTF-8");
     res.write(html);
     return res.end();
   } catch (error) {
