@@ -110,7 +110,7 @@ function lazyLoader(source, sourceMap) {
       return start + callString + end;
     }, source);
 
-    callback(null, newCode);
+    callback(null, newCode, sourceMap);
     return;
   }
 

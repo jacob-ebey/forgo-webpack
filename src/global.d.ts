@@ -3,3 +3,14 @@ declare module "*.module.css" {
 
   export default styles;
 }
+
+declare module "*.png" {
+  const image: string;
+
+  export default image;
+}
+declare module ".png?*" {
+  const image: string;
+
+  export default image;
+}

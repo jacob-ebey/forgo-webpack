@@ -1,0 +1,44 @@
+.services {
+  @apply max-w-6xl;
+  @apply mx-auto;
+  @apply px-4 py-32;
+}
+
+.services > h1 {
+  @apply text-4xl md:text-center;
+  @apply mb-8 md:mb-16;
+}
+
+.content {
+  @apply grid gap-4 md:grid-cols-2;
+}
+
+.content > ul {
+  @apply text-2xl;
+}
+
+.content > ul > li {
+  @apply mb-4 md:mb-8;
+}
+
+.content > ul > li > a {
+  @apply capitalize;
+  @apply hover:underline;
+}
+
+.content > div {
+  @apply hidden max-h-0 max-w-0 md:max-h-full md:max-w-none md:flex flex-col justify-center;
+}
+.content > div > img {
+  @apply hidden max-h-0 max-w-0 md:max-h-full md:max-w-none md:block;
+}
+
+.content > div > img {
+  @apply h-96;
+  @apply mb-4;
+  @apply object-contain;
+}
+.content > div > p {
+  @apply h-24;
+  @apply text-gray-600 text-center;
+}

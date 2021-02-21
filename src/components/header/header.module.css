@@ -1,0 +1,33 @@
+.header {
+  @apply block md:flex;
+  @apply max-w-3xl;
+  @apply mx-auto;
+  @apply py-2;
+  @apply print:hidden;
+}
+
+.header h1 {
+  @apply text-2xl whitespace-nowrap;
+  @apply px-4;
+  @apply my-2;
+}
+
+.header h1 a {
+  @apply hover:underline;
+}
+
+.header ul {
+  @apply flex items-center;
+  @apply px-2;
+  @apply m-0 md:ml-auto;
+  @apply overflow-x-auto;
+}
+
+.header ul li {
+  @apply block;
+  @apply p-2;
+}
+
+.header ul li a {
+  @apply hover:underline;
+}
