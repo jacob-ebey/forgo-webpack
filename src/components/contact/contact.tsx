@@ -10,7 +10,6 @@ function Contact(_: unknown, { environment }: ForgoCtorArgs) {
         environment.window.location.search || ""
       );
       const initialMessage = params.get("message");
-      console.log(initialMessage);
 
       return (
         <div className={styles.wrapper}>
