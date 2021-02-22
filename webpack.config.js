@@ -62,7 +62,7 @@ const baseConfig = {
             options: {
               loader: "jsx",
               target: "es2015",
-              jsxFactory: "Forgo.createElement",
+              jsxFactory: "Forgo.h",
               jsxFragment: "Forgo.Fragment",
             },
           },
@@ -92,7 +92,7 @@ const baseConfig = {
             options: {
               loader: "tsx",
               target: "es2015",
-              jsxFactory: "Forgo.createElement",
+              jsxFactory: "Forgo.h",
               jsxFragment: "Forgo.Fragment",
             },
           },
