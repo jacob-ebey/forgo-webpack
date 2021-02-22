@@ -42,24 +42,58 @@ const baseConfig = {
         test: /\.js$/,
         exclude: /node_modules\/(?!linkedom)/,
         use: [
+          require.resolve("./webpack/lazy-loader"),
           {
             loader: "esbuild-loader",
             options: {
               loader: "js",
+              target: "es6",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.jsx$/,
+        exclude: /node_modules\/(?!linkedom)/,
+        use: [
+          require.resolve("./webpack/lazy-loader"),
+          {
+            loader: "esbuild-loader",
+            options: {
+              loader: "jsx",
+              target: "es2015",
+              jsxFactory: "Forgo.createElement",
+              jsxFragment: "Forgo.Fragment",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          require.resolve("./webpack/lazy-loader"),
+          {
+            loader: "esbuild-loader",
+            options: {
+              loader: "ts",
               target: "es2015",
             },
           },
         ],
       },
       {
-        test: /\.tsx?$/,
+        test: /\.tsx$/,
         exclude: /node_modules/,
         use: [
           require.resolve("./webpack/lazy-loader"),
           {
-            loader: "ts-loader",
+            loader: "esbuild-loader",
             options: {
-              transpileOnly: true,
+              loader: "tsx",
+              target: "es2015",
+              jsxFactory: "Forgo.createElement",
+              jsxFragment: "Forgo.Fragment",
             },
           },
         ],
@@ -70,6 +104,9 @@ const baseConfig = {
     new ESBuildPlugin(),
     new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin(),
+    new webpack.ProvidePlugin({
+      Forgo: "forgo",
+    }),
   ],
 };
 
