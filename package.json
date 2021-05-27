@@ -52,7 +52,7 @@
     "webpack-stats-plugin": "1.0.3"
   },
   "dependencies": {
-    "forgo": "0.0.68",
+    "forgo": "0.0.69",
     "linkedom": "0.4.21",
     "web-vitals": "1.1.0"
   },

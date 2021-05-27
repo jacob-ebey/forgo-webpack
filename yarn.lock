@@ -2102,10 +2102,10 @@ for-in@^1.0.2:
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
-forgo@0.0.68:
-  version "0.0.68"
-  resolved "https://registry.yarnpkg.com/forgo/-/forgo-0.0.68.tgz#dc6a26c86b347f3875a52064c96380b376ea37de"
-  integrity sha512-HI00FYb8skfYu+uPol7ZYMrybLyljaVnZH+LhBP2Mq/wa1Z6WFeRavAS4St9s9M/xDYsgiTWRGHAY2I4MN9Wcw==
+forgo@0.0.69:
+  version "0.0.69"
+  resolved "https://registry.yarnpkg.com/forgo/-/forgo-0.0.69.tgz#90191a33d7ae655dea680f6d05d88ba7493b1cf1"
+  integrity sha512-mJWXMrfvWLX7gummpS6ERtQfVQvDfKiFAUIbNrnLj1lI0rjRgSueftaareOe8wD4yDDcfH0Dh2Hyz/vynNCmBQ==
 
 fork-ts-checker-webpack-plugin@^6.1.0:
   version "6.1.0"
