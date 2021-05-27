@@ -26,6 +26,18 @@ function ResumePage() {
             experiences={[
               {
                 bullets: [
+                  "Realizing Module Federation patterns in Next.js to reduce full page reloads between micro-frontends.",
+                  "Introducing an HOC pattern to enable re-use of core business logic such as authentication and \"My Bag\".",
+                  "Maintaining and improving our internal CI/CD Next.js boilerplate.",
+                ],
+                company: "Lululemon",
+                department: "Micro Web App Platform",
+                overview:
+                  "Establishing development patterns at the organization level to enable product teams to scale without growing pains.",
+                title: "Software Engineer",
+              },
+              {
+                bullets: [
                   "Released the first SSR chunk preloading system for Module Federated chunks to production.",
                   "Moved global page scripts out of Adobe to a module federation based system to enabled autonomy of ABT and SRE teams.",
                   "Enabling inline personalization and soft profile storage to product streams.",
